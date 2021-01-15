@@ -1,9 +1,9 @@
-print("[INFO]: Lancement du jeu.")
+print("[INFO]: Launching game.")
 
 # Importation des modules
 
 try:
-    print("------------------------------Détails-de-Pygame------------------------")
+    print("------------------------------Pygame--Details--------------------------")
     import pygame
 
     print("-----------------------------------------------------------------------")
@@ -13,8 +13,8 @@ try:
     import pickle
     import os
     import math
-except:
-    print("[ERREUR]: Impossible d'importer le modules !")
+except Exception:
+    print("[ERROR]: Failed to import modules !")
     import sys
 
     sys.exit()
@@ -147,3 +147,4 @@ while continuer:
         screen.blit(rot_image, rot_image_rect.topleft)
     pygame.display.update()
 pygame.quit()
+print('[INFO]: Game stopped !')
