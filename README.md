@@ -1,4 +1,4 @@
-# Space-Escape
+# Space Escape
 Space escape is a game where you must leave the Earth in a spaceship ...
 
 ### Installation
