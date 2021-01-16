@@ -43,13 +43,13 @@ clock = pygame.time.Clock()
 FPS = 60
 # ressources à charger
 
-img_spaceship = pygame.image.load("ressources/ressource_0").convert_alpha()
-img_star = pygame.image.load("ressources/ressource_1").convert()
-img_icon_spaceship = pygame.image.load("ressources/ressource_2").convert_alpha()
-img_background = pygame.image.load("ressources/ressource_3").convert()
-img_logo = pygame.image.load("ressources/ressource_4").convert_alpha()
-img_btn_normal = pygame.image.load("ressources/ressource_5").convert()
-img_btn_hovered = pygame.image.load("ressources/ressource_6").convert()
+img_spaceship = pygame.image.load("resources/resource_0").convert_alpha()
+img_star = pygame.image.load("resources/resource_1").convert()
+img_icon_spaceship = pygame.image.load("resources/resource_2").convert_alpha()
+img_background = pygame.image.load("resources/resource_3").convert()
+img_logo = pygame.image.load("resources/resource_4").convert_alpha()
+img_btn_normal = pygame.image.load("resources/resource_5").convert()
+img_btn_hovered = pygame.image.load("resources/resource_6").convert()
 btn_font = pygame.font.SysFont('Comic Sans MS', 30)
 
 correction_angle = 90
