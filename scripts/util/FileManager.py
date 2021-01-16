@@ -1,23 +1,43 @@
-import os
-import shutil
-import importlib
+from shutil import copyfile
+from importlib import import_module
 
-lang_files_to_load = ['fr_FR', 'en_US']
+print("[INFO]: Starting file manager ...")
+
+lang_files_to_load = ['en_US', 'fr_FR']
 
 lang_number = len(lang_files_to_load)  # Count the number of files entries
 
 for x in range(0, lang_number):
-    shutil.copyfile(os.path.dirname(__file__) + '/../../ressources/lang/' + lang_files_to_load[x] + ".txt",
-                    "tmp/lang_" + lang_files_to_load[x] + ".py")  # will copy resource/lang file into tmp/lang.
+    try:
+        copyfile('ressources/lang/' + lang_files_to_load[x] + ".txt",
+                 "scripts/util/tmp/lang_" + lang_files_to_load[x] + ".py")  # will copy resource/lang file into tmp/lang
+    except FileNotFoundError:
+        print("[ERROR]: File '" + lang_files_to_load[x] + "' not found in resources folder !")
+
+        copyfile('scripts/util/default/lang/' + lang_files_to_load[x] + '.py',
+                 "ressources/lang/" + lang_files_to_load[x] + ".txt")
 
 for x in range(0, lang_number):
     try:
-        importlib.import_module("tmp.lang_" + lang_files_to_load[x])  # load modified lang file
+        import_module("scripts.util.tmp.lang_" + lang_files_to_load[x])  # load modified lang file
     except:
-        shutil.copyfile('default/lang/' + lang_files_to_load[x] + '.py',
-                        os.path.dirname(__file__) + "/../../ressources/lang/" + lang_files_to_load[x] + ".txt")
-        shutil.copyfile(os.path.dirname(__file__) + '/../../ressources/lang/' + lang_files_to_load[x] + '.txt',
-                        "tmp/lang_" + lang_files_to_load[x] + ".py")
+        copyfile('scripts/util/default/lang/' + lang_files_to_load[x] + '.py',
+                 "ressources/lang/" + lang_files_to_load[x] + ".txt")
+        copyfile('ressources/lang/' + lang_files_to_load[x] + '.txt',
+                 "scripts/util/tmp/lang_" + lang_files_to_load[x] + ".py")
         print("[ERROR]: Failed to launch lang resource '" + lang_files_to_load[x] + "', using default !")
-        importlib.import_module("tmp.lang_" + lang_files_to_load[x])
-        # will copy default to modified, because error where found.
+        import_module("scripts.util.tmp.lang_" + lang_files_to_load[x])
+        # will replace modified files with the defaults because errors were found on them.
+
+    finally:
+        try:
+            scripts = __import__("scripts.util.tmp.lang_" + lang_files_to_load[x])
+            exec(lang_files_to_load[x] + " = " + 'scripts.util.tmp.lang_' + lang_files_to_load[x] + '.' + lang_files_to_load[x]
+                 + '_lang')
+            # load list components as single vars containing info
+            exec("print('[INFO]: Successfully loaded resource " + "\\'" + lang_files_to_load[x] + ".txt" + "\\'" + "." +
+                 "')")
+        except:
+            print("[ERROR]: Can\'t load resource \'" + lang_files_to_load[x] + "\' !")
+
+print("[INFO]: All files are loaded.")

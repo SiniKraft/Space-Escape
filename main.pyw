@@ -19,6 +19,14 @@ except Exception:
 
     sys.exit()
 
+try:
+    from scripts.util.FileManager import lang_files_to_load, lang_number
+    for x in range(0, lang_number):
+        exec("from scripts.util.FileManager import " + lang_files_to_load[x])
+except:
+    print("[ERROR]: Failed to load resources, aborting ...")
+    sys.exit()
+
 # Initialisation de Pygame
 
 pygame.init()
@@ -26,6 +34,7 @@ pygame.font.init()
 pygame.mixer.init()  # Sons de pygame.
 
 # Definition de la fenetre
+
 window_x = 1280
 window_y = 720
 screen = pygame.display.set_mode((window_x, window_y))
@@ -53,13 +62,11 @@ isMenu = True
 
 # fichier lang
 lang = "fr_FR"
-# fr_FR
-fr_FR_lang = ["Jouer", "Paramètres", "Quitter"]
-en_US_lang = ["Play", "Settings", "Quit"]
+
 if lang == "en_US":
-    default_lang = en_US_lang
+    default_lang = eval(lang_files_to_load[0])
 if lang == "fr_FR":
-    default_lang = fr_FR_lang
+    default_lang = eval(lang_files_to_load[1])
 
 play_btn_text = btn_font.render(default_lang[0], False, (0, 0, 255))
 
