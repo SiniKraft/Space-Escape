@@ -13,14 +13,18 @@ try:
     import pickle
     import os
     import math
-except Exception:
+    import tkinter as tk
+    import tkinter.ttk as ttk
+except ImportError:
     print("[ERROR]: Failed to import modules !")
-    import sys
+    from sys import exit
 
-    sys.exit()
+    exit()
 
 try:
-    from scripts.util.FileManager import lang_files_to_load, lang_number
+    from scripts.util.FileManager import lang_files_to_load, lang_number, lang_files_names, lang_list, settings_list, \
+        save
+
     for x in range(0, lang_number):
         exec("from scripts.util.FileManager import " + lang_files_to_load[x])
 except:
@@ -61,17 +65,16 @@ spritegroup = pygame.sprite.Group()
 isMenu = True
 
 # fichier lang
-lang = "fr_FR"
 
-if lang == "en_US":
-    default_lang = eval(lang_files_to_load[0])
-if lang == "fr_FR":
-    default_lang = eval(lang_files_to_load[1])
+lang = lang_files_names[settings_list[0]]
+default_lang = eval(lang)
 
 play_btn_text = btn_font.render(default_lang[0], False, (0, 0, 255))
+settings_btn_text = btn_font.render(default_lang[1], False, (0, 0, 255))
 
 
 # definition du joueur
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -104,25 +107,69 @@ class Button(pygame.sprite.Sprite):
         self.isHovered = False
         self.isClicked = False
         self.isMenu = True
+        self.maxX = 728
+        self.minX = 512
+        self.minY = 362
+        self.maxY = 417
+        self.type = 'play'
 
     def update(self, isMenu):
-        if 728 > mouse[0] > 512 and 362 < mouse[1] < 417:
+        if self.maxX > mouse[0] > self.minX and self.minY < mouse[1] < self.maxY:
             self.isHovered = True
         else:
             self.isHovered = False
         if self.isClicked:
-            self.isMenu = False
-            self.isClicked = False
+            if self.type == 'play':
+                self.isMenu = False
+                self.isClicked = False
+            elif self.type == 'settings':
+                open_settings()
+                self.isClicked = False
 
+
+def open_settings():
+    settings_window = tk.Tk()
+    settings_window.title(default_lang[1])
+    # move window center
+    winWidth = settings_window.winfo_reqwidth()
+    winwHeight = settings_window.winfo_reqheight()
+    posRight = int(settings_window.winfo_screenwidth() / 2 - winWidth / 2)
+    posDown = int(settings_window.winfo_screenheight() / 2 - winwHeight / 2)
+    settings_window.geometry("+{}+{}".format(posRight, posDown))
+    settings_window.configure(width=500, height=400)
+    settings_window.resizable(0, 0)
+    variable = tk.StringVar(settings_window)
+    variable.set(settings_list[0])
+    img = tk.PhotoImage(file="resources/resource_7")
+    panel = tk.Label(settings_window, image=img)
+    text = ttk.Label(settings_window, text=default_lang[3])
+    text.place(x=170, y=50)
+    w = ttk.OptionMenu(settings_window, variable, settings_list[0], *lang_list)
+    w.place(x=250, y=50)
+    btn = ttk.Button(settings_window, text=default_lang[4], command=settings_window.destroy)
+    btn.place(x=215, y=365)
+    panel.pack()
+    settings_window.mainloop()
+    settings_list[0] = variable.get()
+    save(settings_list, "settings.ini")
 
 play_btn = Button()
+settings_btn = Button()
+settings_btn.maxX = 728
+settings_btn.maxY = 492
+settings_btn.minX = 512
+settings_btn.minY = 436
+settings_btn.type = 'settings'
 
 star = Star()
 player = Player()
 # Definition de la fenetre
 continuer = True
 playBtnIsClicked = False
+inSpace = False
 while continuer:
+    if play_btn.isClicked:
+        pass
     mouse = pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -133,6 +180,8 @@ while continuer:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if 728 > mouse[0] > 512 and 362 < mouse[1] < 417:  # check if btn is clicked.
                 play_btn.isClicked = True
+            if 728 > mouse[0] > 512 and 436 < mouse[1] < 492:
+                settings_btn.isClicked = True
 
     mx, my = pygame.mouse.get_pos()
     dx, dy = mx - player.rect.centerx, my - player.rect.centery
@@ -143,15 +192,22 @@ while continuer:
     screen.blit(img_background, (0, 0))
     if play_btn.isMenu:
         play_btn.update(isMenu)
+        settings_btn.update(isMenu)
         screen.blit(img_logo, (window_x / 5.2, window_y / 6))
-        if play_btn.isHovered:
+        if play_btn.isHovered:  # check if btn play is hovered
             screen.blit(img_btn_hovered, (window_x / 2.5, window_y / 2))
         else:
             screen.blit(img_btn_normal, (window_x / 2.5, window_y / 2))
         screen.blit(play_btn_text, (window_x / 2.2, window_y / 1.97))
+        if settings_btn.isHovered:  # check if btn settings is hovered
+            screen.blit(img_btn_hovered, (window_x / 2.5, window_y / 1.65))
+        else:
+            screen.blit(img_btn_normal, (window_x / 2.5, window_y / 1.65))
+        screen.blit(settings_btn_text, (window_x / 2.35, window_y / 1.637))
     else:
-        screen.blit(img_background, (0, 0))
-        screen.blit(rot_image, rot_image_rect.topleft)
+        if inSpace:
+            screen.blit(img_background, (0, 0))
+            screen.blit(rot_image, rot_image_rect.topleft)
     pygame.display.update()
 pygame.quit()
 print('[INFO]: Game stopped !')

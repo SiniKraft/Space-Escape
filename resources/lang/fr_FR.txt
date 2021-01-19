@@ -4,7 +4,7 @@
 #
 # Please do not edit this :
 
-max_number = 2
+max_number = 4
 
 fr_FR_lang = []
 
@@ -16,3 +16,5 @@ for x in range(0, max_number + 1):
 fr_FR_lang[0] = "Jouer"
 fr_FR_lang[1] = "Paramètres"
 fr_FR_lang[2] = "Quitter"
+fr_FR_lang[3] = "Langue :"
+fr_FR_lang[4] = "Sauvegarder les paramètres"
