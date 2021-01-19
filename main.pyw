@@ -153,6 +153,7 @@ def open_settings():
     settings_list[0] = variable.get()
     save(settings_list, "settings.ini")
 
+
 play_btn = Button()
 settings_btn = Button()
 settings_btn.maxX = 728
