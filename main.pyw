@@ -15,6 +15,7 @@ try:
     import math
     import tkinter as tk
     import tkinter.ttk as ttk
+    from pygame import gfxdraw
 except ImportError:
     print("[ERROR]: Failed to import modules !")
     from sys import exit
@@ -22,8 +23,7 @@ except ImportError:
     exit()
 
 try:
-    from scripts.util.FileManager import lang_files_to_load, lang_number, lang_files_names, lang_list, settings_list, \
-        save
+    from scripts.util.FileManager import *
 
     for x in range(0, lang_number):
         exec("from scripts.util.FileManager import " + lang_files_to_load[x])
@@ -193,6 +193,7 @@ while continuer:
     screen.blit(img_background, (0, 0))
     if play_btn.isMenu:
         play_btn.update(isMenu)
+        # pygame.gfxdraw.pixel(surface, 11, 11, 'YELLOW')
         settings_btn.update(isMenu)
         screen.blit(img_logo, (window_x / 5.2, window_y / 6))
         if play_btn.isHovered:  # check if btn play is hovered
