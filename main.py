@@ -1,26 +1,31 @@
-print("[INFO]: Launching game.")
-
+import logging
+import os
+os.remove('latest.log')
+logging.basicConfig(filename='latest.log', format='[%(asctime)s][%(levelname)s/%(name)s]: %(message)s',
+                    level=logging.DEBUG, datefmt='%H:%M:%S')
+logging.info("Launching game.")
 # Importation des modules
 
-try:
-    print("------------------------------Pygame--Details--------------------------")
-    import pygame
+#try:
+print("------------------------------Pygame--Details--------------------------")
+import pygame
 
-    print("-----------------------------------------------------------------------")
-    import sys
-    import time
-    import random
-    import pickle
-    import os
-    import math
-    import tkinter as tk
-    import tkinter.ttk as ttk
-    from pygame import gfxdraw
-except ImportError:
-    print("[ERROR]: Failed to import modules !")
-    from sys import exit
+print("-----------------------------------------------------------------------")
+import sys
+import time
+import random
+import pickle
+import math
+import tkinter as tk
+import tkinter.ttk as ttk
+from pygame import gfxdraw
 
-    exit()
+#except ImportError:
+    #print("[ERROR]: Failed to import modules !")
+    #from sys import exit
+
+    #exit()
+
 
 try:
     from scripts.util.FileManager import *
@@ -28,7 +33,7 @@ try:
     for x in range(0, lang_number):
         exec("from scripts.util.FileManager import " + lang_files_to_load[x])
 except:
-    print("[ERROR]: Failed to load resources, aborting ...")
+    logging.critical("Failed to load resources, aborting ...")
     sys.exit()
 
 # Initialisation de Pygame
@@ -212,4 +217,4 @@ while continuer:
             screen.blit(rot_image, rot_image_rect.topleft)
     pygame.display.update()
 pygame.quit()
-print('[INFO]: Game stopped !')
+logging.info("Game stopped !")

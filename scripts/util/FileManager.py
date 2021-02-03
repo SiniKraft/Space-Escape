@@ -2,8 +2,11 @@ from shutil import copyfile
 from importlib import import_module
 import pickle
 from os.path import isfile
+import logging
+logging.basicConfig(filename='latest.log', format='[%(asctime)s][%(levelname)s/%(name)s]: %(message)s',
+                    level=logging.DEBUG, datefmt='%H:%M:%S')
 
-print("[INFO]: Starting file manager ...")
+logging.info("Starting file manager ...")
 
 lang_files_to_load = ['en_US', 'fr_FR']
 
@@ -40,20 +43,20 @@ def load(directory):
 if isfile("settings.ini"):  # load the save
     try:
         settings_list = load("settings.ini")
-        print('[INFO]: Loaded default settings.')
+        logging.info("Loaded default settings.")
     except:
         settings_list = new_settings()
-        print('[ERROR]: Failed to load settings, recreating them.')
+        logging.error("Failed to load settings, recreating them.")
 else:
     settings_list = new_settings()
-    print('[ERROR]: Default settings file was not found, creating a blank one !')
+    logging.error("Default settings file was not found, creating a blank one !")
 
 for x in range(0, lang_number):
     try:
         copyfile('resources/lang/' + lang_files_to_load[x] + ".txt",
                  "scripts/util/tmp/lang_" + lang_files_to_load[x] + ".py")  # will copy resource/lang file into tmp/lang
     except FileNotFoundError:
-        print("[ERROR]: File '" + lang_files_to_load[x] + "' not found in resources folder !")
+        logging.error("File '" + lang_files_to_load[x] + "' not found in resources folder !")
 
         copyfile('scripts/util/default/lang/' + lang_files_to_load[x] + '.py',
                  "resources/lang/" + lang_files_to_load[x] + ".txt")
@@ -66,7 +69,7 @@ for x in range(0, lang_number):
                  "resources/lang/" + lang_files_to_load[x] + ".txt")
         copyfile('resources/lang/' + lang_files_to_load[x] + '.txt',
                  "scripts/util/tmp/lang_" + lang_files_to_load[x] + ".py")
-        print("[ERROR]: Failed to launch lang resource '" + lang_files_to_load[x] + "', using default !")
+        logging.error("Failed to launch lang resource '" + lang_files_to_load[x] + "', using default !")
         import_module("scripts.util.tmp.lang_" + lang_files_to_load[x])
         # will replace modified files with the defaults because errors were found on them.
 
@@ -77,9 +80,9 @@ for x in range(0, lang_number):
                  lang_files_to_load[x]
                  + '_lang')
             # load list components as single vars containing info
-            exec("print('[INFO]: Successfully loaded resource " + "\\'" + lang_files_to_load[x] + ".txt" + "\\'" + "." +
+            exec("logging.info('Successfully loaded resource " + "\\'" + lang_files_to_load[x] + ".txt" + "\\'" + "." +
                  "')")
         except:
-            print("[ERROR]: Can\'t load resource \'" + lang_files_to_load[x] + "\' !")
+            logging.error("Can\'t load resource \'" + lang_files_to_load[x] + "\' !")
 
-print("[INFO]: All files are loaded.")
+logging.info("All files are loaded.")
