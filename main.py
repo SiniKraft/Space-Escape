@@ -1,9 +1,9 @@
 import logging
 import os
+import nathlib as nlib
 os.remove('latest.log')
-logging.basicConfig(filename='latest.log', format='[%(asctime)s][%(levelname)s/%(name)s]: %(message)s',
-                    level=logging.DEBUG, datefmt='%H:%M:%S')
-logging.info("Launching game.")
+nlib.start_logs("latest.log")
+nlib.log("Launching game.", "info")
 # Importation des modules
 
 #try:
@@ -33,7 +33,7 @@ try:
     for x in range(0, lang_number):
         exec("from scripts.util.FileManager import " + lang_files_to_load[x])
 except:
-    logging.critical("Failed to load resources, aborting ...")
+    nlib.log("Failed to load resources, aborting ...", "critical")
     sys.exit()
 
 # Initialisation de Pygame
@@ -79,6 +79,20 @@ settings_btn_text = btn_font.render(default_lang[1], False, (0, 0, 255))
 
 
 # definition du joueur
+
+class Var:
+    def __init__(self):
+        super(Var, self).__init__()
+        self.is_settings_to_save = False
+
+    def set_value(self, var_name, var_value):
+        if var_name == "is_settings_to_save":
+            self.is_settings_to_save = var_value
+
+    def get_value(self, var_name):
+        if var_name == "is_settings_to_save":
+            return self.is_settings_to_save
+        return None
 
 
 class Player(pygame.sprite.Sprite):
@@ -156,7 +170,7 @@ def open_settings():
     panel.pack()
     settings_window.mainloop()
     settings_list[0] = variable.get()
-    save(settings_list, "settings.ini")
+    nlib.save(settings_list, "settings.ini")
 
 
 play_btn = Button()
@@ -217,4 +231,4 @@ while continuer:
             screen.blit(rot_image, rot_image_rect.topleft)
     pygame.display.update()
 pygame.quit()
-logging.info("Game stopped !")
+nlib.log("Game stopped !", "info")

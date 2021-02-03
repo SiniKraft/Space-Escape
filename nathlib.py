@@ -1,7 +1,17 @@
 ##########################################################
 # This is the nathlib, a lib used by most of my programs #
-# You are free to use it #
+# You are free to use it                                 #
 ##########################################################
+# Instructions : Import nathlib like this :              #
+# 'import nathlib as nlib', will work if nathlib.py is   #
+# where your script is.                                  #
+# To use nathlib in your scripts, do as the following :  #
+# 'nlib.func(args)' where func is the function you want  #
+# to use and args the arguments you need to put into.    #
+##########################################################
+# Thank you, don't forget to see 'github.com/SiniKraft' !#
+##########################################################
+
 import pickle
 import logging
 import datetime
@@ -10,6 +20,12 @@ import urllib.request
 
 # nathlib version :
 nl_v = "1.0.001"
+
+
+def import_m(module):
+    """Will simply import a module into a var
+    Usage : pygame = import_m("pygame")"""
+    return __import__(module)
 
 
 def save(setting_list, directory):
@@ -65,7 +81,7 @@ def get_date(date_type):
     elif date_type == "time_list":
         return [time_tmp.hour, time_tmp.minute, time_tmp.second]
     elif date_type == "date_time_str":
-        return str(now.day) + "/" + str(now.month) + "/" + str(now.year) + " " + str(time_tmp.hour) + ":" +\
+        return str(now.day) + "/" + str(now.month) + "/" + str(now.year) + " " + str(time_tmp.hour) + ":" + \
                str(time_tmp.minute) + ":" + str(time_tmp.second)
     return None
 
