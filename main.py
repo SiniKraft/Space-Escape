@@ -1,12 +1,13 @@
 import logging
 import os
 import nathlib as nlib
+
 os.remove('latest.log')
 nlib.start_logs("latest.log")
 nlib.log("Launching game.", "info")
 # Importation des modules
 
-#try:
+# try:
 print("------------------------------Pygame--Details--------------------------")
 import pygame
 
@@ -20,11 +21,11 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from pygame import gfxdraw
 
-#except ImportError:
-    #print("[ERROR]: Failed to import modules !")
-    #from sys import exit
+# except ImportError:
+# print("[ERROR]: Failed to import modules !")
+# from sys import exit
 
-    #exit()
+# exit()
 
 
 try:
@@ -95,6 +96,9 @@ class Var:
         return None
 
 
+global_var = Var()
+
+
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -147,6 +151,10 @@ class Button(pygame.sprite.Sprite):
 
 
 def open_settings():
+    def save_window_settings():
+        global_var.set_value("is_settings_to_save", True)
+        settings_window.destroy()
+    global_var.set_value("is_settings_to_save", False)
     settings_window = tk.Tk()
     settings_window.title(default_lang[1])
     # move window center
@@ -165,12 +173,13 @@ def open_settings():
     text.place(x=170, y=50)
     w = ttk.OptionMenu(settings_window, variable, settings_list[0], *lang_list)
     w.place(x=250, y=50)
-    btn = ttk.Button(settings_window, text=default_lang[4], command=settings_window.destroy)
+    btn = ttk.Button(settings_window, text=default_lang[4], command=save_window_settings)
     btn.place(x=215, y=365)
     panel.pack()
     settings_window.mainloop()
-    settings_list[0] = variable.get()
-    nlib.save(settings_list, "settings.ini")
+    if global_var.get_value("is_settings_to_save"):
+        settings_list[0] = variable.get()
+        nlib.save(settings_list, "settings.ini")
 
 
 play_btn = Button()

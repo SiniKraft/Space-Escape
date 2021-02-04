@@ -22,6 +22,21 @@ import urllib.request
 nl_v = "1.0.001"
 
 
+def write_file(to_write, directory, add_backspace=False, overwrite=False):
+    if not overwrite:
+        with open(directory, "a") as file:
+            if add_backspace:
+                file.write("\n")
+            file.write(to_write)
+            file.close()
+    else:
+        with open(directory, "w+") as file:
+            if add_backspace:
+                file.write("\n")
+            file.write(to_write)
+            file.close()
+
+
 def import_m(module):
     """Will simply import a module into a var
     Usage : pygame = import_m("pygame")"""
