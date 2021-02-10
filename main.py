@@ -2,9 +2,13 @@ import logging
 import os
 import nathlib as nlib
 
+version_name = "snapshot_001"
+version_number = 1
+
+
 os.remove('latest.log')
 nlib.start_logs("latest.log")
-nlib.log("Launching game.", "info")
+nlib.log("Launching game version {0} ...".format(version_name), "info")
 # Importation des modules
 
 # try:
