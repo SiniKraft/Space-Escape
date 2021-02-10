@@ -4,10 +4,8 @@
 #
 # Please do not edit this :
 
-max_number = 4
-
+max_number = 7
 en_US_lang = []
-
 for x in range(0, max_number + 1):
     en_US_lang.append("Not defined")
 
@@ -18,3 +16,6 @@ en_US_lang[1] = "Settings"
 en_US_lang[2] = "Quit"
 en_US_lang[3] = "Language :"
 en_US_lang[4] = "Save settings"
+en_US_lang[5] = "Version : {0}, Latest : {1}"
+en_US_lang[6] = "Download"
+en_US_lang[7] = "Version : {0}"

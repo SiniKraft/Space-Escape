@@ -167,9 +167,9 @@ def open_settings():
             webbrowser.open(update_result["version"]["latest"]["download"])
 
         if update_result["version"]["latest"]["number"] > version_number:
-            txt_to_config = "Version : {0}, Latest : {1}".format(version_name,
+            txt_to_config = default_lang[5].format(version_name,
                                                                  update_result["version"]["latest"]["name"])
-            btn_update2 = ttk.Button(settings_window, text="Download", command=download)
+            btn_update2 = ttk.Button(settings_window, text=default_lang[6], command=download)
             btn_update2.place(x=40, y=145)
         else:
             txt_to_config = "Version : {0}, You are up to date".format(version_name)
@@ -196,7 +196,7 @@ def open_settings():
     panel = tk.Label(settings_window, image=img)
     text = ttk.Label(settings_window, text=default_lang[3])
     text.place(x=170, y=50)
-    update_txt = ttk.Label(settings_window, text="Version : {0}".format(version_name))
+    update_txt = ttk.Label(settings_window, text=default_lang[7].format(version_name))
     update_txt.place(x=170, y=125)
     btn_update = ttk.Button(settings_window, text="Check for updates", command=check_update_main)
     btn_update.place(x=40, y=125)
