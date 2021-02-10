@@ -5,7 +5,6 @@ import nathlib as nlib
 version_name = "snapshot_001"
 version_number = 1
 
-
 os.remove('latest.log')
 nlib.start_logs("latest.log")
 nlib.log("Launching game version {0} ...".format(version_name), "info")
@@ -17,6 +16,7 @@ import pygame
 
 print("-----------------------------------------------------------------------")
 import sys
+import webbrowser
 import time
 import random
 import pickle
@@ -24,6 +24,7 @@ import math
 import tkinter as tk
 import tkinter.ttk as ttk
 from pygame import gfxdraw
+import threading
 
 # except ImportError:
 # print("[ERROR]: Failed to import modules !")
@@ -89,15 +90,16 @@ class Var:
     def __init__(self):
         super(Var, self).__init__()
         self.is_settings_to_save = False
+        self.is_update_checked = False
 
     def set_value(self, var_name, var_value):
         if var_name == "is_settings_to_save":
             self.is_settings_to_save = var_value
+        if var_name == "is_update_checked":
+            self.is_update_checked = var_value
 
     def get_value(self, var_name):
-        if var_name == "is_settings_to_save":
-            return self.is_settings_to_save
-        return None
+        return eval("self." + var_name)
 
 
 global_var = Var()
@@ -155,9 +157,28 @@ class Button(pygame.sprite.Sprite):
 
 
 def open_settings():
+    global_var.set_value("is_update_checked", False)
+
+    def check_update_main():
+        update_result = nlib.get_json_from_url("https://raw.githubusercontent.com/SiniKraft/"
+                                               "Space-Escape/master/update.json")
+
+        def download():
+            webbrowser.open(update_result["version"]["latest"]["download"])
+
+        if update_result["version"]["latest"]["number"] > version_number:
+            txt_to_config = "Version : {0}, Latest : {1}".format(version_name,
+                                                                 update_result["version"]["latest"]["name"])
+            btn_update2 = ttk.Button(settings_window, text="Download", command=download)
+            btn_update2.place(x=40, y=145)
+        else:
+            txt_to_config = "Version : {0}, You are up to date".format(version_name)
+        update_txt.config(text=txt_to_config)
+
     def save_window_settings():
         global_var.set_value("is_settings_to_save", True)
         settings_window.destroy()
+
     global_var.set_value("is_settings_to_save", False)
     settings_window = tk.Tk()
     settings_window.title(default_lang[1])
@@ -175,6 +196,10 @@ def open_settings():
     panel = tk.Label(settings_window, image=img)
     text = ttk.Label(settings_window, text=default_lang[3])
     text.place(x=170, y=50)
+    update_txt = ttk.Label(settings_window, text="Version : {0}".format(version_name))
+    update_txt.place(x=170, y=125)
+    btn_update = ttk.Button(settings_window, text="Check for updates", command=check_update_main)
+    btn_update.place(x=40, y=125)
     w = ttk.OptionMenu(settings_window, variable, settings_list[0], *lang_list)
     w.place(x=250, y=50)
     btn = ttk.Button(settings_window, text=default_lang[4], command=save_window_settings)

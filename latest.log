@@ -1,7 +1,7 @@
-[21:13:19][INFO/root]: Launching game.
-[21:13:20][INFO/root]: Starting file manager ...
-[21:13:20][INFO/root]: Loaded default settings.
-[21:13:20][INFO/root]: Successfully loaded resource 'en_US.txt'.
-[21:13:20][INFO/root]: Successfully loaded resource 'fr_FR.txt'.
-[21:13:20][INFO/root]: All files are loaded.
-[21:13:21][INFO/root]: Game stopped !
+[18:05:06][INFO/root]: Launching game version snapshot_001 ...
+[18:05:07][INFO/root]: Starting file manager ...
+[18:05:07][INFO/root]: Loaded default settings.
+[18:05:08][INFO/root]: Successfully loaded resource 'en_US.txt'.
+[18:05:08][INFO/root]: Successfully loaded resource 'fr_FR.txt'.
+[18:05:08][INFO/root]: All files are loaded.
+[18:05:26][INFO/root]: Game stopped !
